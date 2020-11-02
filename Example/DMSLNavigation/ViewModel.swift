@@ -8,23 +8,20 @@
 
 import RxSwift
 import RxCocoa
+import DMSLNavigation
 
-final class ViewModel: Disposable {
-    struct Signals {
-        let source: ViewModel
-        
-        var push: Signal<Void> { source.pushRelay.asSignal() }
-        var present: Signal<Void> { source.presentRelay.asSignal() }
-        var dismiss: Signal<Void> { source.dismissRelay.asSignal() }
-        var dismissToRoot: Signal<Void> { source.dismissToRootRelay.asSignal() }
-    }
-    
-    private let pushRelay = PublishRelay<Void>()
-    private let presentRelay = PublishRelay<Void>()
-    private let dismissRelay = PublishRelay<Void>()
-    private let dismissToRootRelay = PublishRelay<Void>()
+extension Signals where Source == ViewModel {
+    var push: Signal<Void> { source.pushRelay.asSignal() }
+    var present: Signal<Void> { source.presentRelay.asSignal() }
+    var dismiss: Signal<Void> { source.dismissRelay.asSignal() }
+    var dismissToRoot: Signal<Void> { source.dismissToRootRelay.asSignal() }
+}
 
-    var signals: Signals { Signals(source: self) }
+final class ViewModel: Disposable, SignalsSource {
+    fileprivate let pushRelay = PublishRelay<Void>()
+    fileprivate let presentRelay = PublishRelay<Void>()
+    fileprivate let dismissRelay = PublishRelay<Void>()
+    fileprivate let dismissToRootRelay = PublishRelay<Void>()
     
     func push() { pushRelay.accept(()) }
     func present() { presentRelay.accept(()) }
