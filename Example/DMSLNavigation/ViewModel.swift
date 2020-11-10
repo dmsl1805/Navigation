@@ -15,6 +15,8 @@ extension Signals where Source == ViewModel {
     var present: Signal<Void> { source.presentRelay.asSignal() }
     var dismiss: Signal<Void> { source.dismissRelay.asSignal() }
     var dismissToRoot: Signal<Void> { source.dismissToRootRelay.asSignal() }
+    var dismissAndPresent: Signal<Void> { source.dismissAndPresentRelay.asSignal() }
+    var presentAfterDismiss: Signal<Void> { source.presentAfterDismissRelay.asSignal() }
 }
 
 final class ViewModel: Disposable, SignalsSource {
@@ -22,11 +24,15 @@ final class ViewModel: Disposable, SignalsSource {
     fileprivate let presentRelay = PublishRelay<Void>()
     fileprivate let dismissRelay = PublishRelay<Void>()
     fileprivate let dismissToRootRelay = PublishRelay<Void>()
-    
+    fileprivate let dismissAndPresentRelay = PublishRelay<Void>()
+    fileprivate let presentAfterDismissRelay = PublishRelay<Void>()
+
     func push() { pushRelay.accept(()) }
     func present() { presentRelay.accept(()) }
     func dismiss() { dismissRelay.accept(()) }
     func dismissToRoot() { dismissToRootRelay.accept(()) }
+    func dismissAndPresent() { dismissAndPresentRelay.accept(()) }
+    func continueAfterDismiss() { presentAfterDismissRelay.accept(()) }
     
     func dispose() { }
 }

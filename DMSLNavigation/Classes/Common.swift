@@ -26,10 +26,7 @@ extension UIViewController {
             assertionFailure("Presented View Controller is missing")
             return completion?() ?? ()
         }
-        presented.dismiss(animated: animated) { [unowned self, completion] in
-            // If there are any other presented view controllers at this time
-            self.dismissPresented(animated: animated, completion: completion)
-        }
+        presented.dismiss(animated: animated, completion: completion)
     }
     
     func dismissToRoot(animated: Bool = true,

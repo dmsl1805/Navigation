@@ -62,9 +62,11 @@
                         <leftBarButtonItems>
                             <barButtonItem title="Item" image="arrow.down" catalog="system" id="mZi-kr-pgQ"/>
                             <barButtonItem title="Item" image="arrow.down.to.line" catalog="system" id="teP-2R-8XO"/>
+                            <barButtonItem title="Item" image="arrow.up.arrow.down" catalog="system" id="C9D-k0-cXq"/>
                         </leftBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="dismissAndPresentItem" destination="C9D-k0-cXq" id="rnb-3Y-2va"/>
                         <outlet property="dismissItem" destination="mZi-kr-pgQ" id="LBF-13-cwT"/>
                         <outlet property="dismissToRootItem" destination="teP-2R-8XO" id="uuZ-i8-vvi"/>
                         <outlet property="presentButton" destination="sg8-0e-RBd" id="qLh-ss-7pR"/>
@@ -79,5 +81,6 @@
     <resources>
         <image name="arrow.down" catalog="system" width="120" height="128"/>
         <image name="arrow.down.to.line" catalog="system" width="128" height="128"/>
+        <image name="arrow.up.arrow.down" catalog="system" width="128" height="98"/>
     </resources>
 </document>

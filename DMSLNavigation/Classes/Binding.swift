@@ -8,7 +8,9 @@
 import RxSwift
 import RxCocoa
 
-public extension UIViewController {
+public protocol NavigationBindable { }
+
+extension UIViewController: NavigationBindable {
     func bindNavigation<T, Prop>(signal: Signal<Prop>,
                                  transition: T,
                                  bag: DisposeBag)
@@ -22,7 +24,7 @@ public extension UIViewController {
 
 // MARK: - View Controller Based
 
-public extension UIViewController {
+public extension NavigationBindable where Self: UIViewController {
     
     // MARK: Present
     
@@ -30,11 +32,13 @@ public extension UIViewController {
                            signal: Signal<Prop>,
                            bag: DisposeBag,
                            isAnimated: Bool = true,
-                           sourceViewPath: KeyPath<UIViewController, UIView>? = nil) {
+                           sourceViewPath: KeyPath<Self, UIView>? = nil,
+                           completion: Completion? = nil) {
         let transition = PresentTransition(presentingViewController: self,
                                            presentedViewControllerFactory: presentedViewControllerFactory,
                                            sourceViewPath: sourceViewPath,
-                                           isAnimated: isAnimated)
+                                           isAnimated: isAnimated,
+                                           completion: completion)
         signal
             .emit(onNext: transition.perform)
             .disposed(by: bag)
@@ -45,10 +49,12 @@ public extension UIViewController {
     func bindDismiss(signal: Signal<Void>,
                      bag: DisposeBag,
                      isAnimated: Bool = true,
-                     option: DismissTransition.Option = .current) {
+                     option: DismissTransition.Option = .current,
+                     completion: Completion? = nil) {
         let transition = DismissTransition(presentedViewController: self,
                                            isAnimated: isAnimated,
-                                           option: option)
+                                           option: option,
+                                           completion: completion)
         signal
             .emit(onNext: transition.perform)
             .disposed(by: bag)
@@ -64,10 +70,12 @@ public extension UIViewController {
     func bindPush<Prop>(presentedViewControllerFactory: @escaping (Prop) -> UIViewController,
                         signal: Signal<Prop>,
                         bag: DisposeBag,
-                        isAnimated: Bool = true) {
+                        isAnimated: Bool = true,
+                        completion: Completion? = nil) {
         let transition = NavigationPushTransition(presentingViewController: self,
                                                   presentedViewControllerFactory: presentedViewControllerFactory,
-                                                  isAnimated: isAnimated)
+                                                  isAnimated: isAnimated,
+                                                  completion: completion)
         signal
             .emit(onNext: transition.perform)
             .disposed(by: bag)
@@ -78,10 +86,12 @@ public extension UIViewController {
     func bindPop(signal: Signal<Void>,
                  bag: DisposeBag,
                  isAnimated: Bool = true,
-                 option: NavigationPopTransition.Option = .pop) {
+                 option: NavigationPopTransition.Option = .pop,
+                 completion: Completion? = nil) {
         let transition = NavigationPopTransition(presentingViewController: self,
                                                  isAnimated: isAnimated,
-                                                 option: option)
+                                                 option: option,
+                                                 completion: completion)
         signal
             .emit(onNext: transition.perform)
             .disposed(by: bag)

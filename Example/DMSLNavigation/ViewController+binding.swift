@@ -18,6 +18,7 @@ extension ViewController {
         bag.insert(
             dismissItem.rx.tap.bind(onNext: viewModel.dismiss),
             dismissToRootItem.rx.tap.bind(onNext: viewModel.dismissToRoot),
+            dismissAndPresentItem.rx.tap.bind(onNext: viewModel.dismissAndPresent),
             pushButton.rx.tap.bind(onNext: viewModel.push),
             presentButton.rx.tap.bind(onNext: viewModel.present)
         )
@@ -43,7 +44,10 @@ extension ViewController {
     func bindAsPresented(viewModel: ViewModel) {
         rx.viewDidLoad.bind { [unowned self] in
             navigationItem.title = "Presented"
-            
+            navigationItem.leftBarButtonItems = [dismissItem,
+                                                 dismissToRootItem,
+                                                 dismissAndPresentItem]
+
             bind(viewModel: viewModel)
         }.disposed(by: bag)
     }
@@ -55,6 +59,8 @@ extension ViewController {
     func bindAsPushed(viewModel: ViewModel) {
         rx.viewDidLoad.bind { [unowned self] in
             navigationItem.title = "Pushed"
+            navigationItem.leftBarButtonItems = [dismissItem,
+                                                 dismissToRootItem]
             
             bind(viewModel: viewModel)
         }.disposed(by: bag)

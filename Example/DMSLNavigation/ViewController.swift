@@ -14,7 +14,8 @@ final class ViewController: UIViewController {
     
     @IBOutlet private (set) var dismissItem: UIBarButtonItem!
     @IBOutlet private (set) var dismissToRootItem: UIBarButtonItem!
-    
+    @IBOutlet private (set) var dismissAndPresentItem: UIBarButtonItem!
+
     @IBOutlet private (set) var pushButton: UIButton!
     @IBOutlet private (set) var presentButton: UIButton!
 }
